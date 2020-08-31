@@ -12,6 +12,41 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  TextEditingController weightController = TextEditingController();
+  TextEditingController heightController = TextEditingController();
+
+  Future<void> _showDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('IMC Calc'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('The result is: $_imc'),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  String _imc = "0.0";
+
+  void _resetFields() {
+    weightController.text = "";
+    heightController.text = "";
+  }
+
+  void _calcImc() {
+    double weight = double.parse(weightController.text);
+    double height = double.parse(heightController.text) / 100;
+    _imc = (weight / (height * height)).toStringAsPrecision(4);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +58,7 @@ class _HomeState extends State<Home> {
             IconButton(
               icon: Icon(Icons.refresh),
               onPressed: () {
-                _showDialog();
+                _resetFields();
               },
             )
           ],
@@ -43,6 +78,7 @@ class _HomeState extends State<Home> {
                     border: OutlineInputBorder(),
                     labelText: 'Weight',
                   ),
+                  controller: weightController,
                 ),
               ),
               TextField(
@@ -51,6 +87,7 @@ class _HomeState extends State<Home> {
                   border: OutlineInputBorder(),
                   labelText: 'Height',
                 ),
+                controller: heightController,
               ),
               Padding(
                   padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -58,6 +95,7 @@ class _HomeState extends State<Home> {
                       height: 50.0,
                       child: RaisedButton(
                         onPressed: () {
+                          _calcImc();
                           _showDialog();
                         },
                         child: Text(
@@ -69,28 +107,5 @@ class _HomeState extends State<Home> {
             ],
           ),
         ));
-  }
-
-  Future<void> _showDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('IMC Calc'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('The result is: '),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  double _calcImc() {
-    return 0.0;
   }
 }
