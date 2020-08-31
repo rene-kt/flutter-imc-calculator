@@ -2,6 +2,6 @@
 
 An IMC calculator using flutter, with validators and AlertDialog
 
-![FlutterImcCalc](FlutterImcCalc.gif)
+![FlutterImcCalc](https://github.com/reness0/flutter-imc-calculator/blob/master/FlutterImcCalc.gif)
 
 
