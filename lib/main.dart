@@ -42,6 +42,7 @@ class _HomeState extends State<Home> {
   void _resetFields() {
     weightController.text = "";
     heightController.text = "";
+    _formKey = GlobalKey<FormState>();
   }
 
   void _calcImc() {
