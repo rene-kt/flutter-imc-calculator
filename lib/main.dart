@@ -29,16 +29,20 @@ class _HomeState extends State<Home> {
           ],
         ),
         body: SingleChildScrollView(
+          padding: EdgeInsets.fromLTRB(10, 5.0, 10, 5.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Icon(Icons.person_pin_circle,
                   size: 100, color: Colors.deepPurple),
-              TextField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Weight',
+              Padding(
+                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Weight',
+                  ),
                 ),
               ),
               TextField(
@@ -48,18 +52,20 @@ class _HomeState extends State<Home> {
                   labelText: 'Height',
                 ),
               ),
-              Container(
-                  height: 50.0,
-                  child: RaisedButton(
-                    onPressed: () {
-                      _showDialog();
-                    },
-                    child: Text(
-                      "Calc",
-                      style: TextStyle(color: Colors.white, fontSize: 25.0),
-                    ),
-                    color: Colors.deepPurple,
-                  ))
+              Padding(
+                  padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  child: Container(
+                      height: 50.0,
+                      child: RaisedButton(
+                        onPressed: () {
+                          _showDialog();
+                        },
+                        child: Text(
+                          "Calc",
+                          style: TextStyle(color: Colors.white, fontSize: 25.0),
+                        ),
+                        color: Colors.deepPurple,
+                      )))
             ],
           ),
         ));
@@ -68,10 +74,10 @@ class _HomeState extends State<Home> {
   Future<void> _showDialog() async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('AlertDialog Title'),
+          title: Text('IMC Calc'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
