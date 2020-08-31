@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -14,6 +15,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   TextEditingController weightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
+
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Future<void> _showDialog() async {
     return showDialog<void>(
@@ -64,48 +67,63 @@ class _HomeState extends State<Home> {
           ],
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(10, 5.0, 10, 5.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Icon(Icons.person_pin_circle,
-                  size: 100, color: Colors.deepPurple),
-              Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Weight',
-                  ),
-                  controller: weightController,
-                ),
-              ),
-              TextField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Height',
-                ),
-                controller: heightController,
-              ),
-              Padding(
-                  padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                  child: Container(
-                      height: 50.0,
-                      child: RaisedButton(
-                        onPressed: () {
-                          _calcImc();
-                          _showDialog();
-                        },
-                        child: Text(
-                          "Calc",
-                          style: TextStyle(color: Colors.white, fontSize: 25.0),
+            padding: EdgeInsets.fromLTRB(10, 5.0, 10, 5.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Icon(Icons.person_pin_circle,
+                      size: 100, color: Colors.deepPurple),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Weight',
                         ),
-                        color: Colors.deepPurple,
-                      )))
-            ],
-          ),
-        ));
+                        controller: weightController,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "Please, fill out all the fields";
+                          }
+                        }),
+                  ),
+                  TextFormField(
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Height',
+                      ),
+                      controller: heightController,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "Please, fill out all the fields";
+                        } else if (value.length > 3) {
+                          return "Plase, put a valid height";
+                        }
+                      }),
+                  Padding(
+                      padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                      child: Container(
+                          height: 50.0,
+                          child: RaisedButton(
+                            onPressed: () {
+                              if (_formKey.currentState.validate()) {
+                                _calcImc();
+                                _showDialog();
+                              }
+                            },
+                            child: Text(
+                              "Calc",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 25.0),
+                            ),
+                            color: Colors.deepPurple,
+                          )))
+                ],
+              ),
+            )));
   }
 }
